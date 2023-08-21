@@ -13,7 +13,7 @@ checkpoints
 # Credential information that should never be checked in
 *.secret
 
-_datasets/
+datasets/
 scripts/wandb/_staff/
 
 # Data types

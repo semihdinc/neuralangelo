@@ -101,12 +101,19 @@ class Dataset(base.Dataset):
 
     def get_camera(self, idx):
         # Camera intrinsics.
-        intr = torch.tensor([[self.meta["fl_x"], self.meta["sk_x"], self.meta["cx"]],
-                             [self.meta["sk_y"], self.meta["fl_y"], self.meta["cy"]],
-                             [0, 0, 1]]).float()
+        # if self.meta['fl_x']:
+        #     intr = torch.tensor([[self.meta["fl_x"], 0, self.meta["cx"]],
+        #                         [0, self.meta["fl_y"], self.meta["cy"]],
+        #                         [0, 0, 1]]).float()
+        # else:
+        intr = torch.tensor([[self.list[idx]["fl_x"], 0, self.list[idx]["cx"]],
+                            [0, self.list[idx]["fl_y"], self.list[idx]["cy"]],
+                            [0, 0, 1]]).float()
+
         # Camera pose.
         c2w_gl = torch.tensor(self.list[idx]["transform_matrix"], dtype=torch.float32)
         c2w = gl_to_cv(c2w_gl)
+        
         if not self.meta['centered']:
             # center scene
             center = np.array(self.meta["sphere_center"])
@@ -116,8 +123,8 @@ class Dataset(base.Dataset):
         if not self.meta['scaled']:
             # scale scene
             scale = np.array(self.meta["sphere_radius"])
-            if self.readjust:
-                scale *= getattr(self.readjust, "scale", 1.)
+            # if self.readjust:
+            #     scale *= getattr(self.readjust, "scale", 1.)
             c2w[:3, -1] /= scale
         w2c = camera.Pose().invert(c2w[:3])
         return intr, w2c
