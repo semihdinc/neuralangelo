@@ -25,6 +25,7 @@ scripts/wandb/_staff/
 *.tiff
 *.tif
 *.mp4
+*.MOV
 *.tar
 *.tar.gz
 *.pkl
@@ -33,6 +34,13 @@ scripts/wandb/_staff/
 
 # log folder
 logs/
+
+# dataset folder
+datasets/
+
+# config folder
+!projects/neuralangelo/configs/custom/template.yaml
+projects/neuralangelo/configs/custom
 
 # ------------------------ BELOW IS AUTO-GENERATED FOR PYTHON REPOS ------------------------
 
